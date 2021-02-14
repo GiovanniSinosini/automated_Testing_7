@@ -1,15 +1,18 @@
 package com.github.giovannisinosini.automated_Testing_7.servicos;
 
 
+import static com.github.giovannisinosini.automated_Testing_7.utils.DataUtils.isMesmaData;
+import static com.github.giovannisinosini.automated_Testing_7.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import com.github.giovannisinosini.automated_Testing_7.entidades.Filme;
 import com.github.giovannisinosini.automated_Testing_7.entidades.Locacao;
@@ -17,6 +20,11 @@ import com.github.giovannisinosini.automated_Testing_7.entidades.Usuario;
 import com.github.giovannisinosini.automated_Testing_7.utils.DataUtils;
 
 public class LocacaoService_Teste {
+	
+	
+	@Rule
+	public ErrorCollector error = new ErrorCollector();
+	
 	@Test
 	public void test() {
 		// cenario
@@ -29,16 +37,9 @@ public class LocacaoService_Teste {
 
 		// verificacao/validacao
 		
-		//Assert.assertEquals(5.0, locacao.getValor(), 0.01);
-		//Assert.assertThat(locacao.getValor(), CoreMatchers.is(5.0));
-		assertThat(locacao.getValor(), is(equalTo(5.0)));
-		assertThat(locacao.getValor(), is(CoreMatchers.not(6.0)));
-		
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
-
-		Assert.assertThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		Assert.assertThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true));
+		error.checkThat(locacao.getValor(), is(equalTo(6.0)));
+		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
+		error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(false));
 
 		
 	}
