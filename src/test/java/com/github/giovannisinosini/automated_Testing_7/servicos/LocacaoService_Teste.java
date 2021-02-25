@@ -54,35 +54,4 @@ public class LocacaoService_Teste {
 		// acao
 		service.alugarFilme(usuario, filme);
 	}
-	
-	//robust shape
-	@Test
-	public void testLocacao_filmeSemEstoque2() {
-		// cenario
-		LocacaoService service = new LocacaoService();
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 2, 5.0);
-
-		// acao
-		try {
-			service.alugarFilme(usuario, filme);
-			Assert.fail("Deveria ter lancado uma excecao");
-		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), is("Filme sem estoque"));
-		}
-	}
-	
-	@Test
-	public void testLocacao_filmeSemEstoque_3() throws Exception {
-		// cenario
-		LocacaoService service = new LocacaoService();
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 2, 5.0);
-
-		exception.expect(Exception.class);
-		exception.expectMessage("Filme sem estoque");
-		// acao
-		service.alugarFilme(usuario, filme);
-
-	}
 }
