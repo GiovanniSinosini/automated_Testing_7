@@ -4,9 +4,11 @@ import static com.github.giovannisinosini.automated_Testing_7.utils.DataUtils.is
 import static com.github.giovannisinosini.automated_Testing_7.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -16,14 +18,13 @@ import com.github.giovannisinosini.automated_Testing_7.entidades.Filme;
 import com.github.giovannisinosini.automated_Testing_7.entidades.Locacao;
 import com.github.giovannisinosini.automated_Testing_7.entidades.Usuario;
 import com.github.giovannisinosini.automated_Testing_7.exceptions.FilmeSemEstoqueException;
-
-import junit.framework.Assert;
+import com.github.giovannisinosini.automated_Testing_7.exceptions.LocadoraException;
 
 public class LocacaoService_Teste {
 
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
-	
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
@@ -53,5 +54,35 @@ public class LocacaoService_Teste {
 
 		// acao
 		service.alugarFilme(usuario, filme);
+
+	}
+
+	@Test
+	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
+		// cenario
+		LocacaoService service = new LocacaoService();
+		Filme filme = new Filme("Filme 1", 1, 5.0);
+		Usuario usuario = new Usuario("Usuario 1");
+
+		// acao
+		try {
+			service.alugarFilme(null, filme);
+			Assert.fail();
+		} catch (LocadoraException e) {
+			assertThat(e.getMessage(), is("Usuario Vazio"));
+		}
+	}
+
+	@Test
+	public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException {
+		// cenario
+		LocacaoService service = new LocacaoService();
+		Usuario usuario = new Usuario("Usuario 1");
+
+		exception.expect(LocadoraException.class);
+		exception.expectMessage("Filme vazio");
+		// acao
+		service.alugarFilme(usuario, null);
+
 	}
 }
