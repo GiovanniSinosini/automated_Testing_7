@@ -69,7 +69,6 @@ public class LocacaoService_Teste {
 	public void testLocacao_UsuarioVazio() throws FilmeSemEstoqueException {
 		// cenario
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
-		Usuario usuario = new Usuario("Usuario 1");
 
 		// acao
 		try {
